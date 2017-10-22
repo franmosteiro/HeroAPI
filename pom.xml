@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.theinit</groupId>
+    <artifactId>imqcm-backend-vertx</artifactId>
+    <version>0.1-SNAPSHOT</version>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- Docker context variables  -->
+        <docker.image.name>imqcm-backend-vertx</docker.image.name>
+        <docker.image.src.root>src/main/resources/infrastructure</docker.image.src.root>
+        <docker.build.directory>${project.build.directory}/imqcm-backend-vertx</docker.build.directory>
+
+        <!-- Dependency versions -->
+        <V.maven.compiler>3.1</V.maven.compiler>
+        <V.docker.maven.plugin>0.4.13</V.docker.maven.plugin>
+        <V.dockerfile.maven.plugin>1.3.6</V.dockerfile.maven.plugin>
+        <V.vertx.core>3.5.0</V.vertx.core>
+        <V.vertx.web>3.5.0</V.vertx.web>
+        <V.vertx.unit>3.5.0</V.vertx.unit>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${V.maven.compiler}</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <!--
+                Copy the directory containing static content to build directory.
+            -->
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${docker.build.directory}</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${docker.image.src.root}</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--
+                Copy the JAR file containing the Vert.x verticle
+                to the application/lib directory.
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <!--
+                                        Specify groupId, artifactId, version and type for the
+                                        artifact you want to package in the Docker image.
+                                        In the case of a Spring Boot application, these are
+                                        the same as the project group id, artifact id
+                                        and version.
+                                    -->
+                                    <groupId>${project.groupId}</groupId>
+                                    <artifactId>${project.artifactId}</artifactId>
+                                    <version>${project.version}</version>
+                                    <type>jar</type>
+                                    <overWrite>true</overWrite>
+                                    <outputDirectory>${docker.build.directory}/lib</outputDirectory>
+                                    <!--
+                                        Specify the destination name as to have one and the same name
+                                        to refer to in the Docker file.
+                                    -->
+                                    <destFileName>imqcm-backend-vertx.jar</destFileName>
+                                </artifactItem>
+                                <!-- Add additional artifacts to be packaged in the Docker image here. -->
+                            </artifactItems>
+                            <outputDirectory>${docker.build.directory}</outputDirectory>
+                            <overWriteReleases>true</overWriteReleases>
+                            <overWriteSnapshots>true</overWriteSnapshots>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--
+                Remove any existing Docker image with the image name
+                and image tag (project version) configured in the properties.
+            -->
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>${V.docker.maven.plugin}</version>
+                <executions>
+                    <execution>
+                        <id>remove-image</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>removeImage</goal>
+                        </goals>
+                        <configuration>
+                            <imageName>${docker.image.name}</imageName>
+                            <repository>${docker.image.name}</repository>
+                            <imageTags>
+                                <imageTag>${project.version}</imageTag>
+                            </imageTags>
+                            <verbose>true</verbose>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--
+                Build the Docker image.
+            -->
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>dockerfile-maven-plugin</artifactId>
+                <version>${V.dockerfile.maven.plugin}</version>
+                <executions>
+                    <execution>
+                        <id>default</id>
+                        <goals>
+                            <goal>build</goal>
+                            <goal>push</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <contextDirectory>${docker.build.directory}</contextDirectory>
+                    <imageName>${docker.image.name}</imageName>
+                    <repository>${docker.image.name}</repository>
+                    <imageTags>
+                        <imageTag>${project.version}</imageTag>
+                    </imageTags>
+                    <dockerDirectory>${docker.build.directory}</dockerDirectory>
+                    <dockerInfoDirectory></dockerInfoDirectory>
+                    <writeTestMetadata>false</writeTestMetadata>
+                    <verbose>true</verbose>
+                    <forceCreation>true</forceCreation>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-core</artifactId>
+            <version>${V.vertx.core}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-web</artifactId>
+            <version>${V.vertx.web}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-unit</artifactId>
+            <version>${V.vertx.unit}</version>
+        </dependency>
+    </dependencies>
+
+</project>
