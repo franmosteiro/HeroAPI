@@ -2,7 +2,7 @@
 FROM vertx/vertx3
 
 #
-ENV VERTICLE_NAME com.theinit.verticles.App
+ENV VERTICLE_NAME MainVerticle
 ENV VERTICLE_FILE lib/imqcm-backend-vertx.jar
 
 # Set the location of the verticles
