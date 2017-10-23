@@ -17,19 +17,73 @@
         <docker.build.directory>${project.build.directory}/imqcm-backend-vertx</docker.build.directory>
 
         <!-- Dependency versions -->
-        <V.maven.compiler>3.1</V.maven.compiler>
-        <V.docker.maven.plugin>0.4.13</V.docker.maven.plugin>
-        <V.dockerfile.maven.plugin>1.3.6</V.dockerfile.maven.plugin>
-        <V.vertx.core>3.5.0</V.vertx.core>
-        <V.vertx.web>3.5.0</V.vertx.web>
-        <V.vertx.unit>3.5.0</V.vertx.unit>
+        <maven.compiler.version>3.3</maven.compiler.version>
+        <docker.maven.plugin.version>0.4.13</docker.maven.plugin.version>
+        <dockerfile.maven.plugin.version>1.3.6</dockerfile.maven.plugin.version>
+        <logback.version>1.2.3</logback.version>
+        <slf4j.version>1.7.25</slf4j.version>
+        <vertx.stack.version>3.5.0</vertx.stack.version>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.vertx</groupId>
+                <artifactId>vertx-dependencies</artifactId>
+                <version>${vertx.stack.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>examples-utils</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+        <!-- Testing -->
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-unit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>${V.maven.compiler}</version>
+                <version>${maven.compiler.version}</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
@@ -60,7 +114,7 @@
                 </executions>
             </plugin>
             <!--
-                Copy the JAR file containing the Vert.x verticle
+                Copy the JAR file containing the Vert.x verticles
                 to the application/lib directory.
             -->
             <plugin>
@@ -111,7 +165,7 @@
             <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
-                <version>${V.docker.maven.plugin}</version>
+                <version>${docker.maven.plugin.version}</version>
                 <executions>
                     <execution>
                         <id>remove-image</id>
@@ -121,11 +175,9 @@
                         </goals>
                         <configuration>
                             <imageName>${docker.image.name}</imageName>
-                            <repository>${docker.image.name}</repository>
                             <imageTags>
                                 <imageTag>${project.version}</imageTag>
                             </imageTags>
-                            <verbose>true</verbose>
                         </configuration>
                     </execution>
                 </executions>
@@ -136,7 +188,7 @@
             <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>dockerfile-maven-plugin</artifactId>
-                <version>${V.dockerfile.maven.plugin}</version>
+                <version>${dockerfile.maven.plugin.version}</version>
                 <executions>
                     <execution>
                         <id>default</id>
@@ -148,12 +200,7 @@
                 </executions>
                 <configuration>
                     <contextDirectory>${docker.build.directory}</contextDirectory>
-                    <imageName>${docker.image.name}</imageName>
                     <repository>${docker.image.name}</repository>
-                    <imageTags>
-                        <imageTag>${project.version}</imageTag>
-                    </imageTags>
-                    <dockerDirectory>${docker.build.directory}</dockerDirectory>
                     <dockerInfoDirectory></dockerInfoDirectory>
                     <writeTestMetadata>false</writeTestMetadata>
                     <verbose>true</verbose>
@@ -162,23 +209,5 @@
             </plugin>
         </plugins>
     </build>
-
-    <dependencies>
-        <dependency>
-            <groupId>io.vertx</groupId>
-            <artifactId>vertx-core</artifactId>
-            <version>${V.vertx.core}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.vertx</groupId>
-            <artifactId>vertx-web</artifactId>
-            <version>${V.vertx.web}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.vertx</groupId>
-            <artifactId>vertx-unit</artifactId>
-            <version>${V.vertx.unit}</version>
-        </dependency>
-    </dependencies>
 
 </project>
