@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
-import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.Router;
 
 import java.util.*;
@@ -96,7 +95,7 @@ public class HerosVerticle extends AbstractVerticle {
     }
 
     /*   API   */
-    public void addOne(RoutingContext routingContext) {
+    private void addOne(RoutingContext routingContext) {
         // Read the request's content and create an instance of Hero.
         final Hero hero = Json.decodeValue(routingContext.getBodyAsString(),
                 Hero.class);
@@ -110,7 +109,7 @@ public class HerosVerticle extends AbstractVerticle {
                 .end(Json.encodePrettily(hero));
     }
 
-    public void getOne(RoutingContext routingContext) {
+    private void getOne(RoutingContext routingContext) {
         final String id = routingContext.request().getParam("id");
         if (id == null) {
             routingContext.response().setStatusCode(400).end();
@@ -127,7 +126,7 @@ public class HerosVerticle extends AbstractVerticle {
         }
     }
 
-    public void updateOne(RoutingContext routingContext) {
+    private void updateOne(RoutingContext routingContext) {
         final String id = routingContext.request().getParam("id");
         JsonObject json = routingContext.getBodyAsJson();
         if (id == null || json == null) {
@@ -147,7 +146,7 @@ public class HerosVerticle extends AbstractVerticle {
         }
     }
 
-    public void deleteOne(RoutingContext routingContext) {
+    private void deleteOne(RoutingContext routingContext) {
         String id = routingContext.request().getParam("id");
         if (id == null) {
             routingContext.response().setStatusCode(400).end();
@@ -158,7 +157,7 @@ public class HerosVerticle extends AbstractVerticle {
         routingContext.response().setStatusCode(204).end();
     }
 
-    public void getAll(RoutingContext routingContext) {
+    private void getAll(RoutingContext routingContext) {
         // Write the HTTP response
         // The response is in JSON using the utf-8 encoding
         // We returns the list of bottles
@@ -167,7 +166,7 @@ public class HerosVerticle extends AbstractVerticle {
                 .end(Json.encodePrettily(heros.values()));
     }
 
-    public Map<Integer, Hero> createSomeData() {
+    private Map<Integer, Hero> createSomeData() {
 
         Map<Integer, Hero> heroes = new HashMap<Integer, Hero>(0);
         Hero h1 = new Hero("Captain America", "Marvel");
