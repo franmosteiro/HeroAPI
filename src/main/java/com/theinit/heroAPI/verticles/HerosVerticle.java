@@ -1,6 +1,6 @@
-package com.theinit.imqcm.verticles;
+package com.theinit.heroAPI.verticles;
 
-import com.theinit.imqcm.entities.Hero;
+import com.theinit.heroAPI.entities.Hero;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServer;

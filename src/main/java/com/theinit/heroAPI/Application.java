@@ -1,6 +1,6 @@
-package com.theinit.imqcm;
+package com.theinit.heroAPI;
 
-import com.theinit.imqcm.verticles.HerosVerticle;
+import com.theinit.heroAPI.verticles.HerosVerticle;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Verticle;
 import io.vertx.core.Vertx;
@@ -32,7 +32,7 @@ public class Application {
 
     private static JsonObject loadConfig() throws IOException {
         JsonObject config;
-        try (InputStream resourceAsStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("conf/imqcm-config.json")) {
+        try (InputStream resourceAsStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("conf/heroAPI-config.json")) {
             try (Scanner scanner = new Scanner(resourceAsStream)) {
                 config = new JsonObject(scanner.useDelimiter("\\A").next());
             }
