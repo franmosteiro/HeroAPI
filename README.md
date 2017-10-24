@@ -10,8 +10,11 @@ Vert.X (Java) PoC (Proof of concept)
     mvn clean package
     
 ### Run
-We mange it in 2 different ways:
+We manage it in 2 different ways:
 #### through Docker (you need to have it installed locally)
     ./docker run
+WARN: Actually BUGGED!  =(
+
 #### through your IDE
+    ![alt text](https://raw.githubusercontent.com/franmosteiro/HeroAPI/master/.png)
     
