@@ -16,5 +16,5 @@ We manage it in 2 different ways:
 WARN: Actually BUGGED!  =(
 
 #### through your IDE
-    ![IntelliJ run configuration](https://raw.githubusercontent.com/franmosteiro/HeroAPI/master/doc/run_config.png)
+    ![alt text](https://raw.githubusercontent.com/franmosteiro/HeroAPI/master/doc/run_config.png?raw=true "IntelliJ run configuration")
     
