@@ -4,17 +4,17 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.theinit</groupId>
-    <artifactId>hero-loca-api</artifactId>
+    <groupId>com.acme</groupId>
+    <artifactId>hero-local-api</artifactId>
     <version>0.1-SNAPSHOT</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!-- Docker context variables  -->
-        <docker.image.name>hero-loca-api</docker.image.name>
+        <docker.image.name>hero-local-api</docker.image.name>
         <docker.image.src.root>src/main/resources/infrastructure</docker.image.src.root>
-        <docker.build.directory>${project.build.directory}/hero-loca-api</docker.build.directory>
+        <docker.build.directory>${project.build.directory}/hero-local-api</docker.build.directory>
 
         <!-- Dependency versions -->
         <maven.compiler.version>3.3</maven.compiler.version>
@@ -142,7 +142,7 @@
                                         Specify the destination name as to have one and the same name
                                         to refer to in the Docker file.
                                     -->
-                                    <destFileName>hero-loca-api.jar</destFileName>
+                                    <destFileName>hero-local-api.jar</destFileName>
                                 </artifactItem>
                                 <!-- Add additional artifacts to be packaged in the Docker image here. -->
                             </artifactItems>

@@ -2,8 +2,8 @@
 FROM vertx/vertx3
 
 #
-ENV VERTICLE_NAME MainVerticle
-ENV VERTICLE_FILE lib/imqcm-backend-vertx.jar
+ENV VERTICLE_NAME HerosVerticle
+ENV VERTICLE_FILE lib/hero-local-api.jar
 
 # Set the location of the verticles
 ENV VERTICLE_HOME /usr/verticles

@@ -1,6 +1,6 @@
-package com.theinit.heroAPI.verticles;
+package com.acme.heroAPI.verticles;
 
-import com.theinit.heroAPI.entities.Hero;
+import com.acme.heroAPI.entities.Hero;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.Json;
@@ -29,7 +29,7 @@ public class HerosVerticleTest {
     public void setUp(TestContext context) throws IOException {
         vertx = Vertx.vertx();
         ServerSocket socket = new ServerSocket(0);
-        port = socket.getLocalPort();
+        port = 8082;//socket.getLocalPort();
         socket.close();
         DeploymentOptions options = new DeploymentOptions()
                 .setConfig(new JsonObject().put("http.port", port)

@@ -1,6 +1,6 @@
-package com.theinit.heroAPI;
+package com.acme.heroAPI;
 
-import com.theinit.heroAPI.verticles.HerosVerticle;
+import com.acme.heroAPI.verticles.HerosVerticle;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Verticle;
 import io.vertx.core.Vertx;

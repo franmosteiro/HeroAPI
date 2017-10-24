@@ -1,4 +1,4 @@
-package com.theinit.heroAPI.entities;
+package com.acme.heroAPI.entities;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

@@ -1,6 +1,7 @@
-package com.theinit.heroAPI.verticles;
+package com.acme.heroAPI.verticles;
 
-import com.theinit.heroAPI.entities.Hero;
+import com.acme.heroAPI.entities.Hero;
+import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServer;
@@ -16,6 +17,8 @@ import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
 import io.vertx.ext.web.Router;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
 public class HerosVerticle extends AbstractVerticle {
@@ -34,13 +37,13 @@ public class HerosVerticle extends AbstractVerticle {
     private int port;
     private Map<Integer, Hero> heros = new LinkedHashMap<>();
 
-    private void loadInitialData(){
-        port = config().getInteger("http.port", 8080);
+    private void loadInitialData() throws IOException {
+        port = loadConfig().getInteger("http.port", 8080);
         heros = createSomeData();
     }
 
     @Override
-    public void start(Future<Void> fut) {
+    public void start(Future<Void> fut) throws  IOException {
 
         logger.info("Starting server on port {}", port);
         loadInitialData();
@@ -58,6 +61,16 @@ public class HerosVerticle extends AbstractVerticle {
                         }
                     }
                 );
+    }
+
+    private static JsonObject loadConfig() throws IOException {
+        JsonObject config;
+        try (InputStream resourceAsStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("conf/heroAPI-config.json")) {
+            try (Scanner scanner = new Scanner(resourceAsStream)) {
+                config = new JsonObject(scanner.useDelimiter("\\A").next());
+            }
+        }
+        return config;
     }
 
     private Router createRoutes(Vertx vertx) {
