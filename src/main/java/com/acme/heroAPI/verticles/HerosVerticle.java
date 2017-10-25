@@ -45,8 +45,8 @@ public class HerosVerticle extends AbstractVerticle {
     @Override
     public void start(Future<Void> fut) throws  IOException {
 
-        logger.info("Starting server on port {}", port);
         loadInitialData();
+        logger.info("Starting server on port {}", port);
 
         Router router = createRoutes(vertx);
 
