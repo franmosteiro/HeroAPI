@@ -1,3 +1,5 @@
 target
 .idea
 hero-local-api.iml
+/.vertx/
+/file-uploads/

@@ -20,11 +20,9 @@ public class Application {
         Vertx vertx = Vertx.vertx();
         Verticle marvelHeroesVerticle = new HerosVerticle();
 
-        final int port = Integer.getInteger("http.port", 8082);
-
-        vertx.deployVerticle(marvelHeroesVerticle, new DeploymentOptions().setConfig(loadConfig()), res -> {
+        vertx.deployVerticle(marvelHeroesVerticle, new DeploymentOptions().setConfig(new JsonObject().put("http.port", 8082)), res -> {
             if (res.succeeded())
-                logger.info("Main service is running at " + port + " port...");
+                logger.info("Main service is running ...");
             else
                 res.cause().printStackTrace();
         });

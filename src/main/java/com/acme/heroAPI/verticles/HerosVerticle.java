@@ -38,7 +38,7 @@ public class HerosVerticle extends AbstractVerticle {
     private Map<Integer, Hero> heros = new LinkedHashMap<>();
 
     private void loadInitialData() throws IOException {
-        port = loadConfig().getInteger("http.port", 8080);
+        port = config().getInteger("http.port", 8080);
         heros = createSomeData();
     }
 
@@ -61,16 +61,6 @@ public class HerosVerticle extends AbstractVerticle {
                         }
                     }
                 );
-    }
-
-    private static JsonObject loadConfig() throws IOException {
-        JsonObject config;
-        try (InputStream resourceAsStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("conf/heroAPI-config.json")) {
-            try (Scanner scanner = new Scanner(resourceAsStream)) {
-                config = new JsonObject(scanner.useDelimiter("\\A").next());
-            }
-        }
-        return config;
     }
 
     private Router createRoutes(Vertx vertx) {
