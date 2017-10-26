@@ -27,14 +27,4 @@ public class Application {
                 res.cause().printStackTrace();
         });
     }
-
-    private static JsonObject loadConfig() throws IOException {
-        JsonObject config;
-        try (InputStream resourceAsStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("conf/heroAPI-config.json")) {
-            try (Scanner scanner = new Scanner(resourceAsStream)) {
-                config = new JsonObject(scanner.useDelimiter("\\A").next());
-            }
-        }
-        return config;
-    }
 }

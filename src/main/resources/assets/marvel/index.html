@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My heros Collection</title>
+
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container" role="main">
+    <div class="jumbotron">
+        <h1>My heros Collection</h1>
+    </div>
+    <div class="page-header">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>My heros <3</h1>
+                <button class="pull-right btn btn-primary hero-add" data-action="add" data-toggle="modal"
+                        data-target="#heroModal">
+                    <span class="glyphicon glyphicon-plus"></span> Add a new hero!
+                </button>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                    </tr>
+                    </thead>
+                    <tbody id="content">
+                    <!-- filled using Ajax -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        load();
+    });
+
+    function load() {
+        $("#content").children().remove();
+        $.getJSON("/api/marvel/heros", function (data) {
+            $.each(data.results, function (key, val) {
+                $("<tr><td>" + val.id + "</td><td>" + val.name + "</td><td>" + val.description + "</td>" +
+                    "</tr>").appendTo("#content");
+            });
+        });
+    }
+</script>
+</body>
+</html>

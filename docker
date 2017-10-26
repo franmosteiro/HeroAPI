@@ -1,7 +1,0 @@
-#!/bin/bash
-
-if [ $# -eq 0 ] && [ -z "${1}" ]; then
-    echo "Variable is set to an empty string"
-else
-    docker ${1} -p 8080:8080 hero-local-api:latest
-fi
